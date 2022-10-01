@@ -2916,8 +2916,9 @@ vec4 frag(vec3 pos, vec2 uv, vec4 color, sampler2D tex) {
   no();
   var canvasWidth = 1900;
   var canvasHeight = 1100;
-  var MOVE_SPEED = 1;
+  var Pspeed = 5;
   var size = 0.2;
+  loadSprite("rocky", "sprites/rocky.png");
   loadSprite("bean", "sprites/bean.png");
   loadSprite("coin", "sprites/coin.png");
   loadSound("score", "sounds/score.mp3");
@@ -2927,21 +2928,20 @@ vec4 frag(vec3 pos, vec2 uv, vec4 color, sampler2D tex) {
     area(size),
     scale(size),
     health(100),
-    "player"
+    "player",
+    {
+      speed: Pspeed
+    }
   ]);
   onUpdate(function() {
     var randw = rand(0, canvasWidth);
     var randh = rand(0, canvasHeight);
     let tCoin = 0;
-    if (player.health <= 0) {
-      const score = add([
-        text("Score:" + tCoin),
-        pos(24, 24),
-        { value: 0 }
-      ]);
-    }
-    loop(999999999, () => {
+    loop(999, () => {
       wait(6);
+      wait(6);
+      wait(6);
+      console.log(`coins in game ${Tcoin}`);
       const coin = add([
         sprite("coin"),
         pos(randw, randh),
@@ -2949,6 +2949,8 @@ vec4 frag(vec3 pos, vec2 uv, vec4 color, sampler2D tex) {
         scale(0.5),
         "coin"
       ]);
+      var Tcoin = 0;
+      Tcoin = Tcoin + 1;
       player.onUpdate(() => {
         camPos(player.pos);
       });
@@ -2961,32 +2963,38 @@ vec4 frag(vec3 pos, vec2 uv, vec4 color, sampler2D tex) {
         tCoin = tCoin + 1;
       });
     });
+    keyDown("shift", () => {
+      var dash = Pspeed * 2;
+      player.Pspeed = dash;
+      wait(5);
+      player.Pspeed = Pspeed;
+    });
     keyDown("a", () => {
-      player.move(-MOVE_SPEED, 0);
+      player.move(-pSpeed, 0);
     });
     keyDown("d", () => {
-      player.move(MOVE_SPEED, 0);
+      player.move(Pspeed, 0);
     });
     keyDown("w", () => {
-      player.move(0, -MOVE_SPEED);
+      player.move(0, -Pspeed);
     });
     keyDown("s", () => {
-      player.move(0, MOVE_SPEED);
+      player.move(0, Pspeed);
     });
     keyDown("a", () => {
-      player.move(-MOVE_SPEED, 0);
+      player.move(-Pspeed, 0);
     });
     keyDown("left", () => {
-      player.move(-MOVE_SPEED, 0);
+      player.move(-Pspeed, 0);
     });
     keyDown("right", () => {
-      player.move(MOVE_SPEED, 0);
+      player.move(Pspeed, 0);
     });
     keyDown("up", () => {
-      player.move(0, -MOVE_SPEED);
+      player.move(0, -Pspeed);
     });
     onKeyDown("down", () => {
-      player.move(0, MOVE_SPEED);
+      player.move(0, Pspeed);
     });
   });
 })();

@@ -1,15 +1,17 @@
+
 import kaboom from "kaboom"
 
 
 // initialize context
 kaboom()
     
-    const canvasWidth = 1900
+    const canvasWidth = 1900               
     const canvasHeight = 1100
-    const MOVE_SPEED = 1;
+    const Pspeed = 5;
     var size = 0.2
 
 // load assets 
+loadSprite("rocky", "sprites/rocky.png")
 loadSprite("bean", "sprites/bean.png")
 loadSprite("coin", "sprites/coin.png")
 loadSound("score", "sounds/score.mp3")
@@ -19,7 +21,8 @@ loadSound("score", "sounds/score.mp3")
 //i got to go in ten mins
 
 
-//where
+
+
 
 //add coin to game
 const player = add([
@@ -29,27 +32,28 @@ const player = add([
 	area(size),
     scale(size),
     health(100),
-    "player"
+    "player",
+    {
+       speed: Pspeed, 
+    }
  ])
-    
 
+
+    
+//slopy stuff put togather by zarooma
 
 onUpdate(function() {
 var randw = rand(0, canvasWidth)
 var randh = rand(0, canvasHeight)
 let tCoin = 0
 
-if (player.health <= 0) {
-    const score = add([
-    text("Score:"+tCoin),
-    pos(24, 24),
-    { value: 0 },
-    
-])
-}    
-loop(999999999,() => {
+
+loop(999,() => {
  //put the stuff do draw coins in to game so stuff
     wait(6) ;
+    wait(6) ;
+    wait(6) ;
+    console.log(`coins in game ${Tcoin}`)
         const coin = add([
       sprite("coin"),
       pos(randw,randh),
@@ -57,12 +61,16 @@ loop(999999999,() => {
      scale(0.5),
       "coin"
      ]);
+    
+    
     player.onUpdate(() => {
     camPos(player.pos)
+     
+      
 })
     
 
-    
+    //colsion done by zarooma
 
     player.onCollide("coin", (coin) => {
     var pSize = player.scale = size + 0.00001
@@ -71,54 +79,58 @@ loop(999999999,() => {
     play("score")
     coin.destroy()
         //fixed bug
-   
-        we also should add healing gass that is like the trees in swordbattle kinda but not hides you full
     tCoin = tCoin + 1
-        //hit run for broken ears
-    
-        //i have this on now a branch of git hub so we can use herocap to 
-     });//gtg bye
+        
+     
+     });
 
 })
-
-
+// ateempt to make a 5 second dash by zarooma
+ 
+keyDown("shift",() => {
+    var dash = Pspeed * 2
+    player.Pspeed =  dash
+    wait(5)
+    player.Pspeed =  Pspeed
+});
+    
 
  
-  // but now we need to add getting biger and when you eat the coin a new one spawns
+ 
 
- //yh
  // go left
 	keyDown("a", () => {
-		player.move(-MOVE_SPEED, 0);
+		player.move(-pSpeed, 0);
 	});
 
   //go right
 	keyDown("d", () => {
-		player.move(MOVE_SPEED, 0); 
+		player.move(Pspeed, 0); 
 	});
      //zaroom up and down what the date 29/09/2022
 	keyDown("w", () => {
-       player.move(0, -MOVE_SPEED);
+       player.move(0, -Pspeed);
     });
 	keyDown("s", () => {
-        player.move(0, MOVE_SPEED);
+        player.move(0, Pspeed);
     });
 	keyDown("a", () => {
-		player.move(-MOVE_SPEED, 0);
+		player.move(-Pspeed, 0);
 	});
     keyDown("left", () => {
-		player.move(-MOVE_SPEED, 0);
+		player.move(-Pspeed, 0);
 	});
     
   
 	keyDown("right", () => {
-		player.move(MOVE_SPEED, 0); 
+		player.move(Pspeed, 0); 
 	});
     
 	keyDown("up", () => {
-       player.move(0, -MOVE_SPEED);
+       player.move(0, -Pspeed);
     });
 	onKeyDown("down", () => {
-        player.move(0, MOVE_SPEED);
+        player.move(0, Pspeed);
     });
 })
+
